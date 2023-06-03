@@ -1,2 +1,2 @@
 @ECHO OFF
-Powershell.exe -ExecutionPolicy ByPass -File C:\Users\oscar\OneDrive\Skrivbord\BatchScripts\Interface.ps1
+Powershell.exe -ExecutionPolicy ByPass -File C:\Users\oscar\OneDrive\Dokument\myCode\MC-Server\Interface.ps1

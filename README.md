@@ -18,7 +18,7 @@ You can do that by running these 2 commands in windows powershell
 
 You need to change the path inside the .BAT file to match the path to your Interface.ps1 file. 
 
-In the "UploadLocal" and "properties" functions you need to select a path to a folder where you store the files you want to upload to the server. 
+Change the "SavesPath" varible at line 2 in the Interface.ps1 script to the path of your folder of choice. 
 
 The properties file need to be named "server.properties.txt" and both the backup files need to be in .TAR format. 
 
