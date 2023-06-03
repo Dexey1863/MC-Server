@@ -23,3 +23,5 @@ In the "UploadLocal" and "properties" functions you need to select a path to a f
 The properties file need to be named "server.properties.txt" and both the backup files need to be in .TAR format. 
 
 If you chose UploadServerfile you need to have an entier server in that .TAR file. OBS only use that for downloaded backups for docker. If you chose UploadWorldFile you need to convert the folder where world data is stored to a .TAR file and you need to name it World.TAR. 
+
+You need to create 2 scheduled tasks to backup the server every day. You do that by createding a new task in windows "Task Scheduler" and select the "powershell-backup.ps1" script to run at those selected times.
