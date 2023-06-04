@@ -21,7 +21,8 @@ if ($Task -eq "HELP"){
 	Write-host Restart
 	Write-host CLI
 	Write-Host ServerStatus
-	Write-host 
+	Write-host Seed
+	Write-Host 
 	Write-host Backend Commands $_ -ForegroundColor Red
 	Write-host ---------------------------- -ForegroundColor blue
 	Write-host Backup
@@ -58,6 +59,12 @@ if ($Task -eq "BACKUP") {
 	$timestamp = (Get-Date).ToString("[yyyy-MM-dd]-HH-mm-ss")
     docker run --rm --volumes-from mc -v backups:/backups ubuntu bash -c "tar cvf /backups/mc-backups-$timestamp.tar /data"
 	
+}
+if ($Task -eq "SEED"){
+	Write-Host This is the world Seed. $_ -ForegroundColor Green
+	Write-host --------------------------- -ForegroundColor blue
+	docker exec mc mc-send-to-console seed
+	docker logs mc --tail 1
 }
 if ($Task -eq "UPLOADLOCAL") {
 	Write-Host UploadingLocal NOW $_ -ForegroundColor blue
@@ -121,8 +128,10 @@ if ($Task -eq "PROPERTIES") {
 	sh -c "rm -r /target/server.properties && cp /source/server.properties.txt /target/server.properties"
 }
 if ($Task -eq "DownloadBackup"){
-	Write-Host showing backup folder, copy the name of the backup you want to download.
+	Write-Host Showing backup folder, copy the name of the backup you want to download. $_ -ForegroundColor Red
+	Write-host --------------------------- -ForegroundColor blue
 	docker run -it --rm -v backups:/vol busybox ls -l /vol
+	Write-host --------------------------- -ForegroundColor blue
 	$SourceFile = Read-Host 'Enter the name of the file you want to download'
 	docker run --rm `
     -v backups:/source-volume `
