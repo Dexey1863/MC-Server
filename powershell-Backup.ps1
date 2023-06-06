@@ -19,5 +19,5 @@ $timestamp = (Get-Date).ToString("[yyyy-MM-dd]-HH-mm-ss")
 docker run --rm --volumes-from mc -v backups:/backups ubuntu bash -c "tar cvf /backups/mc-backups-$timestamp.tar /data"
 
 docker rm mc
-docker run -e EULA=TRUE -e MEMORY=2G -e DIFFICULTY=HARD -e MOTD=Gibbning -v minecraftdata:/data -d -it -p 25565:25565 --name mc itzg/minecraft-server
+docker run -e EULA=TRUE -e MEMORY=2G -e DIFFICULTY=HARD -v minecraftdata:/data -d -it -p 25565:25565 --name mc itzg/minecraft-server
     docker container attach mc

@@ -31,12 +31,14 @@ if ($Task -eq "HELP"){
 	Write-host BackupDolder
 	Write-host Ipconfig
 	write-host DownloadBackup
+	Write-Host UPLOADPROPERTIES
+	Write-Host DownloadProperties
 }
 
 if ($Task -eq "START") {
 	Write-Host 		Server starting NOW $_ -ForegroundColor green
 	docker rm mc
-    docker run -e EULA=TRUE -e MEMORY=2G -e DIFFICULTY=HARD -e MOTD=Gibbning -v minecraftdata:/data -d -it -p 25565:25565 --name mc itzg/minecraft-server
+    docker run -e EULA=TRUE -e MEMORY=2G -v minecraftdata:/data -d -it -p 25565:25565 --name mc itzg/minecraft-server
 	$CLI = Read-host 'Want to se the Command Line Interface Y/N'
 	if ($CLI -eq "Y") {
 		start-process Powershell.exe -Argumentlist "-command docker attach mc"
@@ -51,7 +53,7 @@ if ($Task -eq "RESTART"){
 	docker container stop mc
 	
 	docker rm mc
-    docker run -e EULA=TRUE -e MEMORY=2G -e DIFFICULTY=HARD -e MOTD=Gibbning -v minecraftdata:/data -d -it -p 25565:25565 --name mc itzg/minecraft-server
+    docker run -e EULA=TRUE -e MEMORY=2G -e DIFFICULTY=HARD -v minecraftdata:/data -d -it -p 25565:25565 --name mc itzg/minecraft-server
 }
 if ($Task -eq "BACKUP") {
 	Write-Host Backuping NOW $_ -ForegroundColor Red
@@ -115,17 +117,23 @@ if ($Task -eq "BACKUPFOLDER"){
 
 if ($Task -eq "CLI") {
 	Write-Host Opening CLI in another window NOW $_ -ForegroundColor green
-	start-process Powershell.exe -Argumentlist "-command docker attach mc"
+	$WindowState = Read-Host 'Enter "New" to open in another window and "Same" to not'
+	if ($WindowState -eq "New"){
+		start-process Powershell.exe -Argumentlist "-command docker attach mc"
+	} else{
+		docker attach mc
+	}
+	
 }
 if ($Task -eq "IPCONFIG"){
 	ipconfig
 }
-if ($Task -eq "PROPERTIES") {
+if ($Task -eq "UPLOADPROPERTIES") {
 	docker run --rm `
 	-v ${SavesPath}:/source `
 	-v minecraftdata:/target `
 	ubuntu `
-	sh -c "rm -r /target/server.properties && cp /source/server.properties.txt /target/server.properties"
+	sh -c "rm -r /target/server.properties && cp /source/server.properties /target/server.properties"
 }
 if ($Task -eq "DownloadBackup"){
 	Write-Host Showing backup folder, copy the name of the backup you want to download. $_ -ForegroundColor Red
@@ -139,6 +147,13 @@ if ($Task -eq "DownloadBackup"){
     ubuntu `
     sh -c "cp source-volume/${SourceFile} target-volume"
 
+}
+if ($Task -eq "DownloadProperties"){
+	docker run --rm `
+    -v minecraftdata:/source-volume `
+    -v ${SavesPath}:/target-volume `
+    ubuntu `
+    sh -c "cp source-volume/server.properties target-volume"
 }
 if ($Task -eq "EXIT"){
 	exit
